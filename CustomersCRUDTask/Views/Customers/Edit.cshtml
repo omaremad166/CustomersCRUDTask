@@ -1,0 +1,74 @@
+﻿@model CustomersCRUDTask.Models.Customer
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CustomerId" />
+            <div class="form-group">
+                <label asp-for="CustomerFirstName" class="control-label"></label>
+                <input asp-for="CustomerFirstName" class="form-control" />
+                <span asp-validation-for="CustomerFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerLastName" class="control-label"></label>
+                <input asp-for="CustomerLastName" class="form-control" />
+                <span asp-validation-for="CustomerLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerGender" class="control-label"></label>
+                <select asp-for="CustomerGender" class="form-control">
+                    <option disabled value = "">Choose Your Gender</option>
+                    @if(Model.CustomerGender == 'M')
+                    {
+                        <option value="M" selected>Male</option>
+                        <option value="F">Female</option>
+                    } else
+                    {
+                        <option value="M">Male</option>
+                        <option value="F" selected>Female</option>
+                    }
+
+                </select>
+                <span asp-validation-for="CustomerGender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerDOB" class="control-label"></label>
+                <input type="date" min="1950-12-31" max="@DateTime.Now.ToString("yyyy-MM-dd")" data-date-format="yyyy-MM-dd" asp-for="CustomerDOB" class="form-control" />
+                <span asp-validation-for="CustomerDOB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Addresses" class="control-label"></label> <label style="color: grey; font-size:x-small">"If you have multiple addresses, press ENTER after every address"</label>
+                <input value="@string.Join(',', Model.Addresses.Select(a => a.AddressLine).ToList())" name="Addresses" id="Addresses" class="form-control"/>
+                <span asp-validation-for="Addresses" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerEmail" class="control-label"></label>
+                <input asp-for="CustomerEmail" class="form-control" />
+                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $('#Addresses').tagsInput();
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
